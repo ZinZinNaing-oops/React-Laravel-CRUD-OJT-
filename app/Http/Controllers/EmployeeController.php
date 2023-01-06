@@ -30,4 +30,52 @@ class EmployeeController extends Controller
             Log::error($e);
         }
     }
+
+    //deleting employee data
+    public function deleteEmployeeData(Employee $employee)
+    {
+        try {
+            $employee->delete();
+        } catch (Exception $e) {
+            Log::error($e);
+        }
+    }
+
+    //storing employee data
+    public function storeEmployeeData(Request $request)
+    {
+        try {
+            $employeeName = $request->get('employeeName');
+            $employeeSalary = $request->get('employeeSalary');
+            Employee::create([
+                'employee_name' => $employeeName,
+                'salary' => $employeeSalary
+            ]);
+            return response()->json([
+                'employee_name' => $employeeName,
+                'salary' => $employeeSalary
+            ]);
+        } catch (Exception $e) {
+            Log::error($e);
+        }
+    }
+
+    //updating employee data
+    public function updateEmployeeData(Request $request){
+        try {
+            $employeeId=$request->get('employeeId');
+            $employeeName = $request->get('employeeName');
+            $employeeSalary = $request->get('employeeSalary');
+            Employee::where("id",$employeeId)->update([
+                'employee_name' => $employeeName,
+                'salary' => $employeeSalary
+            ]);
+            return response()->json([
+                'employee_name' => $employeeName,
+                'salary' => $employeeSalary
+            ]);
+        } catch (Exception $e) {
+            Log::error($e);
+        }
+    }
 }
